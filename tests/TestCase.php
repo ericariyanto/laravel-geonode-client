@@ -2,9 +2,9 @@
 
 namespace EricAriyanto\LaravelGeoNodeClient\Tests;
 
+use EricAriyanto\LaravelGeoNodeClient\LaravelGeoNodeClientServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use EricAriyanto\LaravelGeoNodeClient\LaravelGeoNodeClientServiceProvider;
 
 class TestCase extends Orchestra
 {

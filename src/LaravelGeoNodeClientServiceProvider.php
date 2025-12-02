@@ -2,9 +2,9 @@
 
 namespace EricAriyanto\LaravelGeoNodeClient;
 
+use EricAriyanto\LaravelGeoNodeClient\Commands\LaravelGeoNodeClientCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use EricAriyanto\LaravelGeoNodeClient\Commands\LaravelGeoNodeClientCommand;
 
 class LaravelGeoNodeClientServiceProvider extends PackageServiceProvider
 {
