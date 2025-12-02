@@ -17,9 +17,7 @@ class LaravelGeoNodeClientServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('laravel-geonode-client')
-            ->hasConfigFile()
-            ->hasViews()
-            // ->hasMigration('create_laravel_geonode_client_table')
+            ->hasConfigFile('geonode-client')
             ->hasCommand(LaravelGeoNodeClientCommand::class);
     }
 }
