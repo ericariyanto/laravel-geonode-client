@@ -21,10 +21,10 @@ class LaravelGeoNodeClientServiceProvider extends PackageServiceProvider
             ->hasCommand(LaravelGeoNodeClientCommand::class);
     }
 
-    public function packageBooting()
+    public function bootingPackage()
     {
         $this->publishes([
-            __DIR__.'/../config/laravel-geonode-client.php' => config_path('laravel-geonode-client.php'),
+            __DIR__ . '/../config/laravel-geonode-client.php' => config_path('laravel-geonode-client.php'),
         ], 'laravel-geonode-client-config');
     }
 }
