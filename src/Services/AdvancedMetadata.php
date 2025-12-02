@@ -1,4 +1,5 @@
 <?php
+
 namespace EricAriyanto\LaravelGeoNodeClient\Services;
 
 use EricAriyanto\LaravelGeoNodeClient\Http\HttpClient;
