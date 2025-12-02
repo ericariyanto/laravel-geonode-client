@@ -1,8 +1,9 @@
 <?php
+
 namespace EricAriyanto\LaravelGeoNodeClient\Services;
 
-use EricAriyanto\LaravelGeoNodeClient\Http\HttpClient;
 use EricAriyanto\LaravelGeoNodeClient\Exceptions\GeoNodeException;
+use EricAriyanto\LaravelGeoNodeClient\Http\HttpClient;
 
 class Styles
 {
@@ -44,9 +45,10 @@ class Styles
         // Try fetch raw endpoint
         try {
             $raw = $this->http->get("/api/v2/styles/{$name}/raw/");
+
             return is_array($raw) ? ($raw['sld'] ?? json_encode($raw)) : $raw;
         } catch (GeoNodeException $e) {
-            throw new GeoNodeException("Unable to fetch SLD for style {$name}: " . $e->getMessage());
+            throw new GeoNodeException("Unable to fetch SLD for style {$name}: ".$e->getMessage());
         }
     }
 
@@ -90,7 +92,7 @@ class Styles
             return $this->http->post("/api/v2/styles/{$styleName}/sync/");
         } catch (GeoNodeException $e) {
             // If not available, return error
-            throw new GeoNodeException("Sync to GeoServer failed for style {$styleName}: " . $e->getMessage());
+            throw new GeoNodeException("Sync to GeoServer failed for style {$styleName}: ".$e->getMessage());
         }
     }
 }
