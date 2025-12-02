@@ -56,6 +56,79 @@ $laravelGeoNodeClient = new EricAriyanto\LaravelGeoNodeClient();
 echo $laravelGeoNodeClient->echoPhrase('Hello, EricAriyanto!');
 ```
 
+```php
+use EricAriyanto\LaravelGeoNodeClient\Facades\LaravelGeoNodeClient;
+
+// List datasets
+$datasets = LaravelGeoNodeClient::datasets()->list(['page_size' => 50]);
+
+// Upload shapefile zip
+$res = LaravelGeoNodeClient::datasets()->uploadFile(storage_path('tmp/parcel.zip'));
+
+// Update keywords
+LaravelGeoNodeClient::metadata()->updateTags(123, ['jalan','batas']);
+```
+
+```php
+// Auto-detect & upload
+LaravelGeoNodeClient::upload()->upload(storage_path('maps/jalan.zip'), [
+    'title' => 'Peta Jalan Kalbar',
+    'abstract' => 'Data jalan terbaru',
+    'regions' => [1, 5],
+    'keywords' => ['jalan','kalbar'],
+]);
+
+// Async upload
+$task = LaravelGeoNodeClient::upload()->uploadAsync(storage_path('tmp/lahan.geojson'));
+$status = LaravelGeoNodeClient::upload()->checkTask($task['task_id']);
+```
+
+## Styles Service (SLD)
+
+```php
+// List styles
+$styles = LaravelGeoNodeClient::styles()->list();
+
+// Get raw SLD
+$sld = LaravelGeoNodeClient::styles()->getSld('peta_jalan_style');
+
+// Upload/replace style
+LaravelGeoNodeClient::styles()->upload('peta_jalan_style', $sld, true);
+
+// Assign style to layer
+LaravelGeoNodeClient::styles()->assignToLayer('layers:jalan_kota', 'peta_jalan_style');
+
+// Sync to GeoServer (if GeoNode supports it)
+LaravelGeoNodeClient::styles()->syncToGeoServer('peta_jalan_style');
+```
+
+## Advanced Metadata
+
+```php
+// Update bbox
+LaravelGeoNodeClient::advancedMetadata()->updateBbox(123, [106.6, -6.5, 107.1, -6.0]);
+
+// Update temporal extent
+LaravelGeoNodeClient::advancedMetadata()->updateTemporal(123, ['start' => '2020-01-01', 'end' => '2023-12-31']);
+
+// Update license
+LaravelGeoNodeClient::advancedMetadata()->updateLicense(123, ['id' => 'cc-by', 'url' => 'https://creativecommons.org/licenses/by/4.0/']);
+
+// Update contact
+LaravelGeoNodeClient::advancedMetadata()->updateContact(123, ['name' => 'Dinas Peta', 'email' => 'peta@example.go.id']);
+
+// Update attribution
+LaravelGeoNodeClient::advancedMetadata()->updateAttribution(123, ['text' => 'Dinas Peta Kalbar', 'url' => 'https://kalbar.example.gov']);
+
+// Full update
+LaravelGeoNodeClient::advancedMetadata()->updateAll(123, [
+    'bbox' => [106.6, -6.5, 107.1, -6.0],
+    'temporal_extent' => ['start' => '2020-01-01', 'end' => '2023-12-31'],
+    'license' => ['id' => 'cc-by'],
+    'contact' => ['name' => 'Dinas Peta'],
+]);
+```
+
 ## Testing
 
 ```bash
