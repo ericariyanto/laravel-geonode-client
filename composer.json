@@ -1,17 +1,17 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "ericariyanto/laravel-geonode-client",
+    "description": "This Library provides a clean, modern Laravel package for interacting with GeoNode API v2+",
     "keywords": [
-        ":vendor_name",
+        "Eric Ariyanto",
         "laravel",
-        ":package_slug"
+        "laravel-geonode-client"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/ericariyanto/laravel-geonode-client",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Eric Ariyanto",
+            "email": "mail@ericariyanto.com",
             "role": "Developer"
         }
     ],
@@ -30,18 +30,17 @@
         "pestphp/pest-plugin-laravel": "^4.0",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan-deprecation-rules": "^2.0",
-        "phpstan/phpstan-phpunit": "^2.0",
-        "spatie/laravel-ray": "^1.35"
+        "phpstan/phpstan-phpunit": "^2.0"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "EricAriyanto\\LaravelGeoNodeClient\\": "src/",
+            "EricAriyanto\\LaravelGeoNodeClient\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
+            "EricAriyanto\\LaravelGeoNodeClient\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
@@ -63,10 +62,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "EricAriyanto\\LaravelGeoNodeClient\\LaravelGeoNodeClientServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "LaravelGeoNodeClient": "EricAriyanto\\LaravelGeoNodeClient\\Facades\\LaravelGeoNodeClient"
             }
         }
     },

@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace EricAriyanto\LaravelGeoNodeClient\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelGeoNodeClientCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-geonode-client';
 
     public $description = 'My command';
 
