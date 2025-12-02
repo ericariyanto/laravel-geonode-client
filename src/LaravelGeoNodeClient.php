@@ -10,7 +10,7 @@ class LaravelGeoNodeClient
 
     public function __construct(array $config = [])
     {
-        $this->http = new HttpClient($config ?: config('geonode-client') ?: []);
+        $this->http = new HttpClient($config ?: config('laravel-geonode-client') ?: []);
     }
 
     public function datasets(): Services\Datasets
