@@ -13,6 +13,11 @@ class LaravelGeoNodeClient
         $this->http = new HttpClient($config ?: config('laravel-geonode-client') ?: []);
     }
 
+    public function http()
+    {
+        return $this->http;
+    }
+
     public function datasets(): Services\Datasets
     {
         return new Services\Datasets($this->http);

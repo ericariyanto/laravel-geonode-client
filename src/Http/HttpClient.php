@@ -31,13 +31,38 @@ class HttpClient
 
     protected function parse($resp)
     {
-        if ($resp->clientError() || $resp->serverError()) {
-            throw new GeoNodeException($resp->body());
+        if ($resp->successful()) {
+            return $this->parseResponseBody($resp);
         }
 
-        return str_contains($resp->header('Content-Type'), 'json')
-            ? $resp->json()
-            : $resp->body();
+        // If GeoNode returns JSON error, try decode it
+        $json = null;
+
+        try {
+            $json = $resp->json();
+        } catch (\Throwable $e) {
+            // ignore
+        }
+
+        if (is_array($json)) {
+            // JSON error payload
+            throw new GeoNodeException(json_encode($json, JSON_PRETTY_PRINT));
+        }
+
+        // Fallback: return raw body (may be HTML error)
+        throw new GeoNodeException($resp->body() ?: 'GeoNode API error: empty response');
+    }
+
+    /**
+     * Safe JSON parser
+     */
+    protected function parseResponseBody($resp)
+    {
+        if (str_contains($resp->header('Content-Type'), 'json')) {
+            return $resp->json();
+        }
+
+        return $resp->body();
     }
 
     public function get($uri, $q = [])
