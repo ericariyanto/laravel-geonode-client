@@ -26,14 +26,14 @@ class Groups
     public function create(array $payload)
     {
         return $this->http->post('/api/v2/groups/', [
-            'group_profile' => $payload
+            'group_profile' => $payload,
         ]);
     }
 
     public function update(int $id, array $payload)
     {
         return $this->http->patch("/api/v2/groups/{$id}/", [
-            'group_profile' => $payload
+            'group_profile' => $payload,
         ]);
     }
 
