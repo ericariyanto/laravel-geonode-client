@@ -27,6 +27,7 @@ class Groups
     public function show(int $id)
     {
         $result = $this->http->get("/api/v2/groups/{$id}/");
+
         return $result['group_profile'] ?? null;
     }
 
@@ -37,8 +38,9 @@ class Groups
         }
         
         $result = $this->http->post('/api/v2/groups/', [
-            'group_profile' => $payload
+            'group_profile' => $payload,
         ]);
+
         return $result['group_profile'] ?? null;
     }
 
@@ -49,8 +51,9 @@ class Groups
         }
 
         $result = $this->http->patch("/api/v2/groups/{$id}/", [
-            'group_profile' => $payload
+            'group_profile' => $payload,
         ]);
+
         return $result['group_profile'] ?? null;
     }
 
