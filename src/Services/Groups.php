@@ -15,26 +15,32 @@ class Groups
 
     public function list()
     {
-        return $this->http->get('/api/v2/groups/');
+        $result = $this->http->get('/api/v2/groups/');
+        $result['data'] = $result['group_profiles'] ?? [];
+
+        return $result;
     }
 
     public function show(int $id)
     {
-        return $this->http->get("/api/v2/groups/{$id}/");
+        $result = $this->http->get("/api/v2/groups/{$id}/");
+        return $result['group_profile'] ?? null;
     }
 
     public function create(array $payload)
     {
-        return $this->http->post('/api/v2/groups/', [
+        $result = $this->http->post('/api/v2/groups/', [
             'group_profile' => $payload
         ]);
+        return $result['group_profile'] ?? null;
     }
 
     public function update(int $id, array $payload)
     {
-        return $this->http->patch("/api/v2/groups/{$id}/", [
+        $result = $this->http->patch("/api/v2/groups/{$id}/", [
             'group_profile' => $payload
         ]);
+        return $result['group_profile'] ?? null;
     }
 
     public function delete(int $id)
