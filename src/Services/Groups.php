@@ -17,6 +17,9 @@ class Groups
     {
         $result = $this->http->get('/api/v2/groups/');
         $result['data'] = $result['group_profiles'] ?? [];
+        if ( !empty($result['group_profiles']) ) {
+            unset($result['group_profiles']);
+        }
 
         return $result;
     }
@@ -29,6 +32,10 @@ class Groups
 
     public function create(array $payload)
     {
+        if ( !isset($payload['group']) ) {
+            $payload['group'] = 1;
+        }
+        
         $result = $this->http->post('/api/v2/groups/', [
             'group_profile' => $payload
         ]);
@@ -37,6 +44,10 @@ class Groups
 
     public function update(int $id, array $payload)
     {
+        if ( !isset($payload['group']) ) {
+            $payload['group'] = 1;
+        }
+
         $result = $this->http->patch("/api/v2/groups/{$id}/", [
             'group_profile' => $payload
         ]);
