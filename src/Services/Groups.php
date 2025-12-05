@@ -13,9 +13,9 @@ class Groups
         $this->http = $http;
     }
 
-    public function list()
+    public function list(array $params = [])
     {
-        $result = $this->http->get('/api/v2/groups/');
+        $result = $this->http->get('/api/v2/groups/', $params);
         $result['data'] = $result['group_profiles'] ?? [];
         if ( !empty($result['group_profiles']) ) {
             unset($result['group_profiles']);
@@ -24,9 +24,9 @@ class Groups
         return $result;
     }
 
-    public function show(int $id)
+    public function show(int $id, array $params = [])
     {
-        $result = $this->http->get("/api/v2/groups/{$id}/");
+        $result = $this->http->get("/api/v2/groups/{$id}/", $params);
 
         return $result['group_profile'] ?? null;
     }

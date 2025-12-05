@@ -13,9 +13,9 @@ class Layers
         $this->http = $http;
     }
 
-    public function list(array $filters = [])
+    public function list(array $params = [])
     {
-        return $this->http->get('/api/v2/layers/', $filters);
+        return $this->http->get('/api/v2/layers/', $params);
     }
 
     public function show(string $name)

@@ -17,17 +17,17 @@ class Styles
     /**
      * List styles
      */
-    public function list(array $filters = [])
+    public function list(array $params = [])
     {
-        return $this->http->get('/api/v2/styles/', $filters);
+        return $this->http->get('/api/v2/styles/', $params);
     }
 
     /**
      * Get style metadata
      */
-    public function show(string $name)
+    public function show(string $name, array $params = [])
     {
-        return $this->http->get("/api/v2/styles/{$name}/");
+        return $this->http->get("/api/v2/styles/{$name}/", $params);
     }
 
     /**

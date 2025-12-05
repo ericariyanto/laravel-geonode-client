@@ -13,14 +13,14 @@ class Users
         $this->http = $http;
     }
 
-    public function list(array $filters = [])
+    public function list(array $params = [])
     {
-        return $this->http->get('/api/v2/users/', $filters);
+        return $this->http->get('/api/v2/users/', $params);
     }
 
-    public function show(int $id)
+    public function show(int $id, array $params = [])
     {
-        return $this->http->get("/api/v2/users/{$id}/");
+        return $this->http->get("/api/v2/users/{$id}/", $params);
     }
 
     public function search(string $query)

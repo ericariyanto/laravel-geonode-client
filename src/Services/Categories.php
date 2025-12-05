@@ -13,9 +13,9 @@ class Categories
         $this->http = $http;
     }
 
-    public function list()
+    public function list(array $params = [])
     {
-        $result = $this->http->get('/api/v2/categories/');
+        $result = $this->http->get('/api/v2/categories/', $params);
         $result['data'] = $result['categories'] ?? [];
         if ( !empty($result['categories']) ) {
             unset($result['categories']);
@@ -24,11 +24,11 @@ class Categories
         return $result;
     }
 
-    public function show(int $id)
+    public function show(int $id, array $params = [])
     {
-        $result = $this->http->get("/api/v2/categories/{$id}/");
+        $result = $this->http->get("/api/v2/categories/{$id}/", $params);
 
         return $result['categories'] ?? null;
     }
-    
+
 }

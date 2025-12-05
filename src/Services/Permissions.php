@@ -13,9 +13,9 @@ class Permissions
         $this->http = $http;
     }
 
-    public function get(int $id)
+    public function get(int $id, array $params = [])
     {
-        return $this->http->get("/api/v2/datasets/{$id}/permissions/");
+        return $this->http->get("/api/v2/datasets/{$id}/permissions/", $params);
     }
 
     public function update(int $id, array $payload)
