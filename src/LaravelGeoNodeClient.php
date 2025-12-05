@@ -43,6 +43,11 @@ class LaravelGeoNodeClient
         return new Services\Permissions($this->http);
     }
 
+    public function categories(): Services\Categories
+    {
+        return new Services\Categories($this->http);
+    }
+
     public function groups(): Services\Groups
     {
         return new Services\Groups($this->http);
