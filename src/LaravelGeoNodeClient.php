@@ -63,6 +63,11 @@ class LaravelGeoNodeClient
         return new Services\Groups($this->http);
     }
 
+    public function resources(): Services\Resources
+    {
+        return new Services\Resources($this->http);
+    }
+
     public function users(): Services\Users
     {
         return new Services\Users($this->http);
