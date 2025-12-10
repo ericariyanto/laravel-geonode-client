@@ -18,8 +18,8 @@ class Layers
         return $this->http->get('/api/v2/layers/', $params);
     }
 
-    public function show(string $name)
+    public function show(string $name, array $params = [])
     {
-        return $this->http->get("/api/v2/layers/{$name}/");
+        return $this->http->get("/api/v2/layers/{$name}/", $params);
     }
 }

@@ -53,6 +53,11 @@ class LaravelGeoNodeClient
         return new Services\Regions($this->http);
     }
 
+    public function keywords(): Services\Keywords
+    {
+        return new Services\Keywords($this->http);
+    }
+
     public function groups(): Services\Groups
     {
         return new Services\Groups($this->http);
