@@ -33,8 +33,8 @@ class Resources
 
     public function create(array $payload)
     {
-        if ( !isset($payload['group']) ) {
-            $payload['group'] = 1;
+        if ( !isset($payload['resource']) ) {
+            $payload['resource'] = 1;
         }
         
         $result = $this->http->post('/api/v2/resources/', [
@@ -46,8 +46,8 @@ class Resources
 
     public function update(int $id, array $payload)
     {
-        if ( !isset($payload['group']) ) {
-            $payload['group'] = 1;
+        if ( !isset($payload['resource']) ) {
+            $payload['resource'] = 1;
         }
 
         $result = $this->http->patch("/api/v2/resources/{$id}/", [
@@ -62,13 +62,13 @@ class Resources
         return $this->http->delete("/api/v2/resources/{$id}/");
     }
 
-    public function assignDataset(int $datasetId, string $group)
+    public function assignDataset(int $datasetId, string $resource)
     {
-        return $this->http->patch("/api/v2/datasets/{$datasetId}/", ['group' => $group]);
+        return $this->http->patch("/api/v2/datasets/{$datasetId}/", ['resource' => $resource]);
     }
 
     public function removeDatasetGroup(int $datasetId)
     {
-        return $this->http->patch("/api/v2/datasets/{$datasetId}/", ['group' => null]);
+        return $this->http->patch("/api/v2/datasets/{$datasetId}/", ['resource' => null]);
     }
 }
