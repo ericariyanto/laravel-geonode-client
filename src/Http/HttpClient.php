@@ -85,25 +85,51 @@ class HttpClient
         return $this->parse($this->base()->delete($uri));
     }
 
-    public function upload(string $uri, string $field, string $filePath, array $other = [])
+    public function upload(string $uri, array $attachments = [], array $payload = [])
     {
-        if (! file_exists($filePath)) {
-            throw new GeoNodeException("File $filePath does not exist");
+        $req          = $this->base();
+        $fileContents = [];
+        foreach($attachments as $key => $value) {
+            if (! file_exists($value)) {
+                throw new GeoNodeException("File {$value} does not exist");
+            }
+
+            $fileContents[$key] = fopen($value, 'r');
+            $req = $req->attach($key, $fileContents[$key]);
         }
 
-        $fileContent = fopen($filePath, 'r');
+        $resp = $req->post($uri, $payload);
 
-        $req = $this->base();
-        foreach ($other as $k => $v) {
-            $req = $req->attach($k, $v);
-        }
-
-        $resp = $req->attach($field, $fileContent, basename($filePath))->post($uri);
-
-        if (is_resource($fileContent)) {
-            fclose($fileContent);
+        foreach($attachments as $key => $value) {
+            if (file_exists($value) && isset($fileContents[$key])) {
+                if (is_resource($fileContents[$key])) {
+                        fclose($fileContents[$key]);
+                    }
+            }
         }
 
         return $this->parse($resp);
     }
+
+    // public function upload(string $uri, string $field, string $filePath, array $other = [])
+    // {
+    //     if (! file_exists($filePath)) {
+    //         throw new GeoNodeException("File $filePath does not exist");
+    //     }
+
+    //     $fileContent = fopen($filePath, 'r');
+
+    //     $req = $this->base();
+    //     foreach ($other as $k => $v) {
+    //         $req = $req->attach($k, $v);
+    //     }
+
+    //     $resp = $req->attach($field, $fileContent, basename($filePath))->post($uri);
+
+    //     if (is_resource($fileContent)) {
+    //         fclose($fileContent);
+    //     }
+
+    //     return $this->parse($resp);
+    // }
 }

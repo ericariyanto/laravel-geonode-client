@@ -16,12 +16,7 @@ class Upload
 
     public function process(array $payload, array $files = [])
     {
-        $http = $this->http;
-        foreach ($files as $file) {
-            $http->attach($file['key'], fopen($file['path'], 'r'));
-        }
-
-        return $this->http->post('/api/v2/uploads/upload/', $payload);
+        return $this->http->upload('/api/v2/uploads/upload/', $files, $payload);
     }
 
     public function show(string $execId)
