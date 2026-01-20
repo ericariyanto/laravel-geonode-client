@@ -23,11 +23,6 @@ class Datasets
         return $this->http->get("/api/v2/datasets/{$id}/");
     }
 
-    public function create(array $payload)
-    {
-        return $this->http->post('/api/v2/datasets/', $payload);
-    }
-
     public function update(int $id, array $payload)
     {
         return $this->http->patch("/api/v2/datasets/{$id}/", $payload);

@@ -14,53 +14,74 @@ class Upload
         $this->http = $http;
     }
 
-    /* Auto detect file type */
-    protected function detect(string $path): string
+    public function process(array $payload, array $files = [])
     {
-        $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        $http = $this->http;
+        foreach ($files as $file) {
+            $http->attach($file['key'], fopen($file['path'], 'r'));
+        }
 
-        return match ($ext) {
-            'zip' => 'shapefile',
-            'geojson' => 'geojson',
-            'tif','tiff' => 'raster',
-            'gpkg' => 'geopackage',
-            default => throw new GeoNodeException("Unsupported file type: $ext"),
-        };
+        return $this->http->post('/api/v2/uploads/upload/', $payload);
     }
 
-    /* Full upload with metadata */
-    public function upload(string $filePath, array $metadata = [])
+    public function show(string $execId)
     {
-        $type = $this->detect($filePath);
-
-        $meta = array_merge([
-            'charset' => 'UTF-8',
-            'publish' => true,
-            'permissions' => [
-                'is_published' => true,
-            ],
-        ], $metadata);
-
-        return $this->http->upload('/api/v2/datasets/upload/', 'base_file', $filePath, [
-            'file_type' => $type,
-            'metadata' => json_encode($meta),
-        ]);
+        $result = $this->http->get("/api/v2/executionrequest/{$execId}/");
+        return $result['request'] ?? [];
     }
 
-    /* Async upload: returns task ID */
-    public function uploadAsync(string $filePath, array $metadata = [])
+    public function list(array $filters = [])
     {
-        $type = $this->detect($filePath);
-
-        return $this->http->upload('/api/v2/uploads/async/', 'base_file', $filePath, [
-            'file_type' => $type,
-            'metadata' => json_encode($metadata),
-        ]);
+        return $this->http->get("/api/v2/executionrequest", $filters);
     }
 
-    /* Polling task status */
-    public function checkTask(string $taskId)
-    {
-        return $this->http->get("/api/v2/uploads/tasks/{$taskId}/");
-    }
+    // /* Auto detect file type */
+    // protected function detect(string $path): string
+    // {
+    //     $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+    //     return match ($ext) {
+    //         'zip' => 'shapefile',
+    //         'geojson' => 'geojson',
+    //         'tif','tiff' => 'raster',
+    //         'gpkg' => 'geopackage',
+    //         default => throw new GeoNodeException("Unsupported file type: $ext"),
+    //     };
+    // }
+
+    // /* Full upload with metadata */
+    // public function upload(string $filePath, array $metadata = [])
+    // {
+    //     $type = $this->detect($filePath);
+
+    //     $meta = array_merge([
+    //         'charset' => 'UTF-8',
+    //         'publish' => true,
+    //         'permissions' => [
+    //             'is_published' => true,
+    //         ],
+    //     ], $metadata);
+
+    //     return $this->http->upload('/api/v2/datasets/upload/', 'base_file', $filePath, [
+    //         'file_type' => $type,
+    //         'metadata' => json_encode($meta),
+    //     ]);
+    // }
+
+    // /* Async upload: returns task ID */
+    // public function uploadAsync(string $filePath, array $metadata = [])
+    // {
+    //     $type = $this->detect($filePath);
+
+    //     return $this->http->upload('/api/v2/uploads/async/', 'base_file', $filePath, [
+    //         'file_type' => $type,
+    //         'metadata' => json_encode($metadata),
+    //     ]);
+    // }
+
+    // /* Polling task status */
+    // public function checkTask(string $taskId)
+    // {
+    //     return $this->http->get("/api/v2/uploads/tasks/{$taskId}/");
+    // }
 }
