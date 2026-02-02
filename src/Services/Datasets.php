@@ -15,17 +15,24 @@ class Datasets
 
     public function list(array $filters = [])
     {
-        return $this->http->get('/api/v2/datasets/', $filters);
+        $result = $this->http->get('/api/v2/datasets/', $filters);
+        $result['data'] = $result['datasets'] ?? [];
+        if ( !empty($result['datasets']) ) {
+            unset($result['datasets']);
+        }
     }
 
     public function show(int $id)
     {
-        return $this->http->get("/api/v2/datasets/{$id}/");
+        $result = $this->http->get("/api/v2/datasets/{$id}/");
+        return $result['dataset'] ?? null;
     }
 
     public function update(int $id, array $payload)
     {
-        return $this->http->patch("/api/v2/datasets/{$id}/", $payload);
+        $result = $this->http->patch("/api/v2/datasets/{$id}/",$payload);
+
+        return $result['dataset'] ?? null;
     }
 
     public function delete(int $id)
@@ -33,8 +40,8 @@ class Datasets
         return $this->http->delete("/api/v2/datasets/{$id}/");
     }
 
-    public function uploadFile(string $filePath, array $extra = [])
-    {
-        return $this->http->upload('/api/v2/datasets/upload/', 'base_file', $filePath, $extra);
-    }
+    // public function uploadFile(string $filePath, array $extra = [])
+    // {
+    //     return $this->http->upload('/api/v2/datasets/upload/', 'base_file', $filePath, $extra);
+    // }
 }
