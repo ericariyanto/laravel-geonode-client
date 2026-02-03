@@ -28,26 +28,12 @@ class HttpClientGeoServer
 
     protected function parse($resp)
     {
-        if ($resp->successful()) {
-            return $this->parseResponseBody($resp);
+        $body = $this->parseResponseBody($resp);
+        if (!$resp->successful()) {
+            throw new GeoNodeException($body);
         }
 
-        // If GeoNode returns JSON error, try decode it
-        $json = null;
-
-        try {
-            $json = $resp->json();
-        } catch (\Throwable $e) {
-            // ignore
-        }
-
-        if (is_array($json)) {
-            // JSON error payload
-            throw new GeoNodeException(json_encode($json, JSON_PRETTY_PRINT));
-        }
-
-        // Fallback: return raw body (may be HTML error)
-        throw new GeoNodeException($resp->body() ?: 'GeoNode API error: empty response');
+        return $body;
     }
 
     /**
