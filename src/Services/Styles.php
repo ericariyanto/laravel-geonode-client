@@ -20,7 +20,10 @@ class Styles
     public function list(array $query = [], string $workspace = 'geonode')
     {
         $list = $this->http->get("/workspaces/{$workspace}/styles", $query);
-        return $list['styles']['style'] ?? [];
+        if ( is_array($list) && isset($list['styles']) ) {
+            return $list['styles']['style'] ?? [];
+        }
+        return $list;
     }
 
     /**
