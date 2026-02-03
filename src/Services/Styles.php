@@ -28,7 +28,12 @@ class Styles
      */
     public function show(string $style, array $query = [], array $params = [], string $workspace = 'geonode')
     {
-        return $this->http->get("/workspaces/{$workspace}/styles/{$style}", $query, $params);
+        $resp = $this->http->get("/workspaces/{$workspace}/styles/{$style}", $query, $params);
+        if ( is_array($resp) && isset($resp['style']) ) {
+            return $resp['style'] ?? [];
+        }
+
+        return $resp;
     }
 
     public function update(string $style, mixed $payload, $params = [], string $workspace = 'geonode')
