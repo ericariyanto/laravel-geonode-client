@@ -62,7 +62,7 @@ class HttpClientGeoServer
         return $resp->body();
     }
 
-    public function get($uri, $q = [], $params)
+    public function get($uri, $q = [], array $params = [])
     {
         return $this->parse($this->base($params)->get($uri, $q));
     }

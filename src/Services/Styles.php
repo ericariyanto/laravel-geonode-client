@@ -26,9 +26,9 @@ class Styles
     /**
      * Get style metadata
      */
-    public function show(string $style, array $params = [], string $workspace = 'geonode')
+    public function show(string $style, array $query = [], array $params = [], string $workspace = 'geonode')
     {
-        $data = $this->http->get("/workspaces/{$workspace}/styles/{$style}", $params);
+        $data = $this->http->get("/workspaces/{$workspace}/styles/{$style}", $query, $params);
         return $data['style'] ?? [];
     }
 
