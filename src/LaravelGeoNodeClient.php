@@ -3,19 +3,27 @@
 namespace EricAriyanto\LaravelGeoNodeClient;
 
 use EricAriyanto\LaravelGeoNodeClient\Http\HttpClient;
+use EricAriyanto\LaravelGeoNodeClient\Http\HttpClientGeoServer;
 
 class LaravelGeoNodeClient
 {
     protected HttpClient $http;
+    protected HttpClientGeoServer $httpGeoServer;
 
     public function __construct(array $config = [])
     {
-        $this->http = new HttpClient($config ?: config('laravel-geonode-client') ?: []);
+        $this->http          = new HttpClient($config ?: config('laravel-geonode-client') ?: []);
+        $this->httpGeoServer = new HttpClientGeoServer($config ?: config('laravel-geonode-client') ?: []);
     }
 
     public function http()
     {
         return $this->http;
+    }
+
+    public function httpGeoServer()
+    {
+        return $this->httpGeoServer;
     }
 
     public function datasets(): Services\Datasets
@@ -80,6 +88,6 @@ class LaravelGeoNodeClient
 
     public function styles(): Services\Styles
     {
-        return new Services\Styles($this->http);
+        return new Services\Styles($this->httpGeoServer);
     }
 }

@@ -11,6 +11,9 @@ return [
     'username' => env('GEONODE_USER', null),
     'password' => env('GEONODE_PASS', null),
 
+    'geoserver_username' => env('GEOSERVER_ADMIN_USER', null),
+    'geoserver_password' => env('GEOSERVER_ADMIN_PASSWORD', null),
+
     /* If using token (Bearer) */
     'token' => env('GEONODE_TOKEN', null),
 
