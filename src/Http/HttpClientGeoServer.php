@@ -62,9 +62,9 @@ class HttpClientGeoServer
         return $resp->body();
     }
 
-    public function get($uri, $q = [])
+    public function get($uri, $q = [], $params)
     {
-        return $this->parse($this->base()->get($uri, $q));
+        return $this->parse($this->base($params)->get($uri, $q));
     }
 
     public function post($uri, $d = [], $params = [])
@@ -82,9 +82,9 @@ class HttpClientGeoServer
         return $this->parse($this->base($params)->put($uri, $d));
     }
 
-    public function delete($uri)
+    public function delete($uri, array $params = [])
     {
-        return $this->parse($this->base()->delete($uri));
+        return $this->parse($this->base($params)->delete($uri));
     }
 
     public function upload(string $uri, array $attachments = [], array $payload = [])
