@@ -17,9 +17,9 @@ class Styles
     /**
      * List styles
      */
-    public function list(array $params = [], string $workspace = 'geonode')
+    public function list(array $query = [], string $workspace = 'geonode')
     {
-        $list = $this->http->get("/workspaces/{$workspace}/styles", $params);
+        $list = $this->http->get("/workspaces/{$workspace}/styles", $query);
         return $list['styles']['style'] ?? [];
     }
 

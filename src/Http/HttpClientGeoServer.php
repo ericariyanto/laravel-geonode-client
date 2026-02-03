@@ -16,7 +16,7 @@ class HttpClientGeoServer
 
     protected function base(array $params = [])
     {
-        $headers = array_merge($this->config["headers"] ?? [], $params['headers']);
+        $headers = array_merge($this->config["headers"] ?? [], ($params['headers'] ?? []));
         $req = Http::timeout($this->config['timeout'] ?? 30)
             ->withHeaders($headers)
             ->baseUrl(rtrim($this->config['base_url'], '/') . '/geoserver/rest');
