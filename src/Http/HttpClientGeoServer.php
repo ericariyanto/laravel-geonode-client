@@ -23,6 +23,10 @@ class HttpClientGeoServer
 
         $req = $req->withBasicAuth($this->config['geoserver_username'], $this->config['geoserver_password']);
 
+        if ( !empty($params['withBody']) ) {
+            $req = $req->withBody($params['withBody']['content'], $params['withBody']['contentType']);
+        }
+
         return $req;
     }
 

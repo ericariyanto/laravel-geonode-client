@@ -41,16 +41,34 @@ class Styles
 
     public function update(string $style, mixed $payload, $params = [], string $workspace = 'geonode')
     {
-        $params['headers']['content-Type'] ??= 'application/vnd.ogc.sld+xml';
-        $result = $this->http->put("/workspaces/{$workspace}/styles/{$style}",$payload, $params);
+        $params = array_merge([
+            'headers' => [
+                'content-Type' => 'application/vnd.ogc.sld+xml',
+                'Accept' => 'application/application/xml',
+            ],
+            'withBody' => [
+                'content' => $payload,
+                'contentType' => 'application/vnd.ogc.sld+xml'
+            ]
+        ], $params);
+        $result = $this->http->put("/workspaces/{$workspace}/styles/{$style}",[], $params);
 
         return $result;
     }
 
-    public function create(int $id, mixed $payload, $params = [], string $workspace = 'geonode')
+    public function create(mixed $payload, $params = [], string $workspace = 'geonode')
     {
-        $params['headers']['content-Type'] ??= 'application/vnd.ogc.sld+xml';
-        $result = $this->http->post("/workspaces/{$workspace}/styles",$payload, $params);
+        $params = array_merge([
+            'headers' => [
+                'content-Type' => 'application/vnd.ogc.sld+xml',
+                'Accept' => 'application/application/xml',
+            ],
+            'withBody' => [
+                'content' => $payload,
+                'contentType' => 'application/vnd.ogc.sld+xml'
+            ]
+        ], $params);
+        $result = $this->http->post("/workspaces/{$workspace}/styles",[], $params);
 
         return $result;
     }
