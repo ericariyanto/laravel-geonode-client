@@ -41,7 +41,7 @@ class Styles
 
     public function update(string $style, mixed $payload, $params = [], string $workspace = 'geonode')
     {
-        $params['headers']['contentType'] ??= 'application/vnd.ogc.sld+xml';
+        $params['headers']['content-Type'] ??= 'application/vnd.ogc.sld+xml';
         $result = $this->http->put("/workspaces/{$workspace}/styles/{$style}",$payload, $params);
 
         return $result;
@@ -49,11 +49,17 @@ class Styles
 
     public function create(int $id, mixed $payload, $params = [], string $workspace = 'geonode')
     {
-        $params['headers']['contentType'] ??= 'application/vnd.ogc.sld+xml';
+        $params['headers']['content-Type'] ??= 'application/vnd.ogc.sld+xml';
         $result = $this->http->post("/workspaces/{$workspace}/styles",$payload, $params);
 
         return $result;
     }
+
+    public function upload(array $payload, mixed $file = null, string $workspace = 'geonode')
+    {
+        return $this->http->upload("/workspaces/{$workspace}/styles", ['file' => $file], $payload);
+    }
+
 
     public function delete(string $style, string $workspace = 'geonode')
     {

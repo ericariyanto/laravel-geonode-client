@@ -33,6 +33,10 @@ class HttpClientGeoServer
             throw new GeoNodeException($body);
         }
 
+        if ( empty($body) ) {
+            return ['success' => true, 'raw' => $body];
+        }
+
         return $body;
     }
 
