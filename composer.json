@@ -67,6 +67,11 @@
             "aliases": {
                 "GeoNodeClient": "EricAriyanto\\LaravelGeoNodeClient\\Facades\\LaravelGeoNodeClient"
             }
+        },
+        "extra": {
+            "branch-alias": {
+                "dev-main": "0.0.20-dev"
+            }
         }
     },
     "minimum-stability": "dev",
