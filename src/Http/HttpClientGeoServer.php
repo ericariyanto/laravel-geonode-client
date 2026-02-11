@@ -14,7 +14,7 @@ class HttpClientGeoServer
         $this->config = $config;
     }
 
-    protected function base(array $params = [])
+    public function base(array $params = [])
     {
         $headers = array_merge($this->config["headers"] ?? [], ($params['headers'] ?? []));
         $req = Http::timeout($this->config['timeout'] ?? 30)
@@ -30,7 +30,7 @@ class HttpClientGeoServer
         return $req;
     }
 
-    protected function parse($resp)
+    public function parse($resp)
     {
         $body = $this->parseResponseBody($resp);
         if (!$resp->successful()) {
@@ -53,7 +53,12 @@ class HttpClientGeoServer
             return $resp->json();
         }
 
-        return $resp->body();
+        $body = $resp->body();
+        if ( empty($body) ) {
+            return ['success' => true];
+        }
+
+        return $body;
     }
 
     public function get($uri, $q = [], array $params = [])

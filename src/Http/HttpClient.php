@@ -14,11 +14,12 @@ class HttpClient
         $this->config = $config;
     }
 
-    protected function base()
+    public function base(array $params = [])
     {
+        $headers = array_merge($this->config["headers"] ?? [], ($params['headers'] ?? []));
         $req = Http::timeout($this->config['timeout'] ?? 30)
-            ->withHeaders($this->config['headers'] ?? [])
-            ->baseUrl(rtrim($this->config['base_url'], '/'));
+                ->withHeaders($headers)
+                ->baseUrl(rtrim($this->config['base_url'], '/'));
 
         if (($this->config['auth'] ?? 'basic') === 'token') {
             $req = $req->withToken($this->config['token']);
@@ -26,10 +27,14 @@ class HttpClient
             $req = $req->withBasicAuth($this->config['username'], $this->config['password']);
         }
 
+        if ( !empty($params['withBody']) ) {
+            $req = $req->withBody($params['withBody']['content'], $params['withBody']['contentType']);
+        }
+
         return $req;
     }
 
-    protected function parse($resp)
+    public function parse($resp)
     {
         if ($resp->successful()) {
             return $this->parseResponseBody($resp);
@@ -62,7 +67,12 @@ class HttpClient
             return $resp->json();
         }
 
-        return $resp->body();
+        $body = $resp->body();
+        if ( empty($body) ) {
+            return ['success' => true];
+        }
+
+        return $body;
     }
 
     public function get($uri, $q = [])

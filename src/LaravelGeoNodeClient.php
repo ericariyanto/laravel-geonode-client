@@ -21,9 +21,19 @@ class LaravelGeoNodeClient
         return $this->http;
     }
 
+    public function getHttp(array $params = [])
+    {
+        return $this->http->base($params);
+    }
+
     public function httpGeoServer()
     {
         return $this->httpGeoServer;
+    }
+
+    public function getHttpGeoServer(array $params = [])
+    {
+        return $this->httpGeoServer->base($params);
     }
 
     public function datasets(): Services\Datasets

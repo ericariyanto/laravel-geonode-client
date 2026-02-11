@@ -31,7 +31,11 @@ class Styles
      */
     public function show(string $style, array $query = [], array $params = [], string $workspace = 'geonode')
     {
-        $resp = $this->http->get("/workspaces/{$workspace}/styles/{$style}", $query, $params);
+        $url    = "/workspaces/{$workspace}/styles/{$style}";
+        $params = array_merge(['headers' => ['Accept' => 'application/json']], $params);
+        $resp   = $this->http->base($params)->get($url, $query);
+
+        $resp = $this->http->parse($resp);
         if ( is_array($resp) && isset($resp['style']) ) {
             return $resp['style'] ?? [];
         }
@@ -39,38 +43,41 @@ class Styles
         return $resp;
     }
 
-    public function update(string $style, mixed $payload, $params = [], string $workspace = 'geonode')
+    public function update(string $style, mixed $payload, string $workspace = 'geonode')
     {
-        $params = array_merge([
-            'headers' => [
-                'content-Type' => 'application/vnd.ogc.sld+xml',
-                'Accept' => 'application/application/xml',
-            ],
-            'withBody' => [
-                'content' => $payload,
-                'contentType' => 'application/vnd.ogc.sld+xml'
-            ]
-        ], $params);
-        $result = $this->http->put("/workspaces/{$workspace}/styles/{$style}",[], $params);
+        
+        $result   = $this->http->base()
+                    ->withBody($payload, 'application/vnd.ogc.sld+xml')
+                    ->put("/workspaces/{$workspace}/styles/{$style}");
 
-        return $result;
+        return $this->http->parse($result);
     }
 
-    public function create(mixed $payload, $params = [], string $workspace = 'geonode')
+    public function create(mixed $payload, string $workspace = 'geonode')
     {
-        $params = array_merge([
-            'headers' => [
-                'content-Type' => 'application/vnd.ogc.sld+xml',
-                'Accept' => 'application/application/xml',
-            ],
-            'withBody' => [
-                'content' => $payload,
-                'contentType' => 'application/vnd.ogc.sld+xml'
-            ]
-        ], $params);
-        $result = $this->http->post("/workspaces/{$workspace}/styles",[], $params);
+        $result   = $this->http->base()
+                    ->withHeaders([
+                         'Content-Type' => 'application/vnd.ogc.sld+xml'
+                    ])
+                    ->withBody($payload, 'application/vnd.ogc.sld+xml')
+                    ->post("/workspaces/{$workspace}/styles");
 
-        return $result;
+        if ( !$result->successful() ) {
+            // check kalau 403 artinya sudah ada
+            $status = $result->status();
+            if ( $status == 401 ) {
+                return ['success' => false, 'message' => __('Unauthorized to access GeoServer (check username/password).')];
+            } else if ( $status == 403 ) {
+                return ['success' => false, 'message' => __('Forbidden, style name already exists')];
+            }
+
+            return ['success' => false, 'message' => __('Invalid SLD content')];
+        }
+
+        return [
+            'success'=> true,
+            'data' => $result->body(),
+        ];
     }
 
     public function upload(array $payload, mixed $file = null, string $workspace = 'geonode')
